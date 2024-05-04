@@ -1,0 +1,18 @@
+---
+- name: create user
+  hosts: NAIN
+  remote_user: zrybs
+  become: yes
+  become_method: sudo
+  vars:
+    pass_test: 'N@n9!T5a$Le#3b%2'
+    test_pass: "{{ '%s' | format(pass_test|string) }}"
+  tasks:
+    - name: update user password
+      user:
+          name: "oracle"
+          password: "{{ test_pass | password_hash('sha512') }}"
+          comment: "oracle user"
+          shell: /bin/bash
+          state: present
+          update_password: always
